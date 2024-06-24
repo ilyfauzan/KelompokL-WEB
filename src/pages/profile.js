@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const Profile = () => {
+  const router = useRouter();
+  const { id } = router.query;
+  
   const [profileData, setProfileData] = useState({
-    name: 'Sumanto',
-    nik: '89998888777766',
-    tanggalMasuk: '01-01-2001',
-    deskripsiKasus: 'Maling ayam pas idul adha',
-    nomorKamar: '09',
-    idSuratPenahanan: '123',
-    namaStafKejaksaan: 'Agus Supriadi',
-    tanggalPenerbitan: '10-10-2010'
+    name: '',
+    nik: '',
+    tanggalMasuk: '',
+    deskripsiKasus: '',
+    nomorKamar: '',
+    idSuratPenahanan: '',
+    namaStafKejaksaan: '',
+    tanggalPenerbitan: ''
   });
+
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      // Fetch profile data based on the id
+      fetch(`/api/profile/${id}`)
+        .then(response => response.json())
+        .then(data => {
+          setProfileData(data);
+        })
+        .catch(error => console.error('Error fetching profile data:', error));
+    }
+  }, [id]);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -28,6 +45,10 @@ const Profile = () => {
   const handleSave = () => {
     // Implement save functionality here, such as sending data to server
     setIsEditing(false);
+  };
+
+  const handleBack = () => {
+    router.back();
   };
 
   return (
@@ -150,16 +171,23 @@ const Profile = () => {
               disabled={!isEditing}
             />
           </div>
-          <div className="col-span-2 flex items-center justify-center">
-          <button
-                className={`${
-                    isEditing ? 'bg-green-500 hover:bg-green-700' : 'bg-blue-500 hover:bg-blue-700'
-                } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-                type="button"
-                onClick={isEditing ? handleSave : handleEdit}
-                >
-                {isEditing ? 'Save Profile Details' : 'Edit Profile Details'}
-                </button>
+          <div className="col-span-2 flex items-center justify-center space-x-4">
+            <button
+              className={`${
+                isEditing ? 'bg-green-500 hover:bg-green-700' : 'bg-blue-500 hover:bg-blue-700'
+              } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+              type="button"
+              onClick={isEditing ? handleSave : handleEdit}
+            >
+              {isEditing ? 'Save Profile Details' : 'Edit Profile Details'}
+            </button>
+            <button
+              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={handleBack}
+            >
+              Back
+            </button>
           </div>
         </form>
       </div>

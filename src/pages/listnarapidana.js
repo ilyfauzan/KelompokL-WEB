@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import SideNavbar from '../components/SideNavbar';
 
 function ListNarapidana() {
+  const router = useRouter();
+  
   const [data, setData] = useState([
     { id: 1, nama: 'John Doe' },
     // Tambahkan data lainnya di sini
@@ -40,7 +43,11 @@ function ListNarapidana() {
   };
 
   const handleCheckProfil = (index) => {
-    // Logika untuk menampilkan profil narapidana, misalnya dengan router push ke halaman profil narapidana
+    // Navigate to the profile page with the id as a query parameter
+    router.push({
+      pathname: '/profile',
+      query: { id: data[index].id }
+    });
   };
 
   const handleBatalEdit = () => {
