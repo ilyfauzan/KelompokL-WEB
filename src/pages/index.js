@@ -14,7 +14,7 @@ export default function Home() {
       <SideNavbar />
 
       {/* Konten Dashboard */}
-      <div className="flex flex-col items-center justify-center w-full px-8">
+      <div className="flex flex-col items-center justify-center w-full px-8 ml-16">
         {/* Membuat konten dashboard lebih besar */}
         <h1 className="text-4xl font-bold mb-8 text-center">Selamat Datang di Dashboard!</h1>
         <div className="bg-white rounded-lg shadow-md w-full md:max-w-4xl p-8 text-center">
